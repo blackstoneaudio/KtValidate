@@ -1,7 +1,5 @@
 plugins {
     kotlin("multiplatform") version "1.5.0"
-//    id("com.android.library")
-//    id("kotlin-android-extensions")
     id("maven-publish")
 }
 
@@ -11,8 +9,6 @@ version = "0.1.0"
 repositories {
     google()
     mavenCentral()
-
-//    maven { url = uri("https://dl.bintray.com/kotlin/kotlin-eap") }
 }
 
 kotlin {
@@ -32,10 +28,6 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
-//        val androidMain by getting
-//        val androidTest by getting
-//        val iosMain by getting
-//        val iosTest by getting
         val jvmMain by getting
     }
 
@@ -56,11 +48,21 @@ kotlin {
 
 }
 
-//android {
-//    compileSdkVersion(29)
-//    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-//    defaultConfig {
-//        minSdkVersion(16)
-//        targetSdkVersion(29)
-//    }
-//}
+publishing {
+    // this fetches our credentials from ~/.gradle/gradle.properties
+    val mavenUser: String by project
+    val mavenPassword: String by project
+
+    repositories {
+        maven {
+            setUrl("https://repos.awhb.dev/releases")
+            authentication {
+                create("basic", BasicAuthentication::class.java)
+            }
+            credentials {
+                username = mavenUser
+                password = mavenPassword
+            }
+        }
+    }
+}
