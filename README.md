@@ -4,7 +4,34 @@ A validation library for Kotlin Multiplatform. This is extreamly basic at this p
 it is a good starting point for a DSL based validation system that can easily be expanded on. 
 
 
-Example usage
+### How to Add KtValidate to Your Project
+Add the repository to your project's `build.gradle.kts`. I'm using kotlin for my gradle syntax, but groovy
+will be pretty similar if that's what you use
+```kotlin 
+repositories {
+    ...
+    maven("https://repos.awhb.dev")
+    ...
+}
+```
+
+add following in your commonMain source set
+```kotlin
+sourceSets {
+  val commonMain by getting {
+    dependencies {
+      ...
+      implementation("com.blackstone:KtValidate:0.1.0")
+        ...
+    }
+  }
+}
+  ...
+```
+
+
+
+### Example usage
 ```kotlin
         val validate = Validate("aaaa") {
             fieldName = "Password"
@@ -21,13 +48,7 @@ and you should now be able to now do +CustomeRule or whatever you named your rul
 
 Feel free to submit a PR if there's not something in here that you want. 
 
-To add this to your project first add jitpack to your gradle repos 
-```gradle
-repositories {
-   ...
-   maven { url 'https://jitpack.io' }
-}
-```
+
 Then add this:
 ```gradle 
 dependencies {
