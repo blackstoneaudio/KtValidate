@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.5.0"
+    kotlin("multiplatform") version "1.6.10"
     id("maven-publish")
 }
 
@@ -13,9 +13,13 @@ repositories {
 
 kotlin {
     jvm()
-    val ios64 = iosArm64("ios64")
-    val iosX64 = iosX64("iosX64")
-    configure(listOf(ios64, iosX64)) {
+
+    js()
+    val iosArm32 = iosArm32()
+    val ios64 = iosArm64()
+    val iosX64 = iosX64()
+    val iosSimArm64 = iosSimulatorArm64()
+    configure(listOf(iosArm32, ios64, iosX64, iosSimArm64)) {
         binaries.framework {
             baseName = "KtValidate"
         }
@@ -53,16 +57,16 @@ publishing {
     val mavenUser: String by project
     val mavenPassword: String by project
 
-    repositories {
-        maven {
-            setUrl("https://repos.awhb.dev/releases")
-            authentication {
-                create("basic", BasicAuthentication::class.java)
-            }
-            credentials {
-                username = mavenUser
-                password = mavenPassword
-            }
-        }
-    }
+//    repositories {
+//        maven {
+//            setUrl("https://repos.awhb.dev/releases")
+//            authentication {
+//                create("basic", BasicAuthentication::class.java)
+//            }
+//            credentials {
+//                username = mavenUser
+//                password = mavenPassword
+//            }
+//        }
+//    }
 }
