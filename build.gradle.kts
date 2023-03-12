@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.6.10"
+    kotlin("multiplatform") version "1.8.10"
     id("maven-publish")
 }
 
@@ -14,7 +14,10 @@ repositories {
 kotlin {
     jvm()
 
-    js()
+    js(IR) {
+        browser { binaries.executable() }
+        nodejs { binaries.executable() }
+    }
     val iosArm32 = iosArm32()
     val ios64 = iosArm64()
     val iosX64 = iosX64()
