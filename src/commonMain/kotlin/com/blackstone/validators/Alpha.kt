@@ -8,7 +8,7 @@ class Alpha(private val minAlphaChars: Int, override var message: String? = null
         val alphaCount = input.count { it.isLetter() }
 
         // Update the error message with the actual count of alpha characters
-        message = message ?: "$fieldName must contain at least $minAlphaChars alphabetic characters, but only has $alphaCount"
+        message = message ?: "$fieldName must contain at least $minAlphaChars alphabetic characters, but has $alphaCount"
 
         // Check if the count of alphabetic characters meets the minimum requirement
         return alphaCount >= minAlphaChars
