@@ -18,7 +18,7 @@ class ValidateTest {
             +Min(3)
         }
         assertFalse(validate.isValid)
-        assertEquals("The user name input was not long enough. Expected 3 but got 2", validate.messages.first())
+        assertEquals("The user name input was not long enough. Expected 3 characters but got 2", validate.messages.first())
         assertEquals(1, validate.messages.size)
     }
 
@@ -29,7 +29,7 @@ class ValidateTest {
             +Max(3)
         }
         assertFalse(validate.isValid)
-        assertEquals("The Password input was too long. Expected less than 4 but got 4", validate.messages.first())
+        assertEquals("The Password input was too long. Expected less than 4 characters but got 4", validate.messages.first())
         assertEquals(1, validate.messages.size)
     }
 
