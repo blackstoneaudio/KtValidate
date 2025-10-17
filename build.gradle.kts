@@ -1,10 +1,10 @@
 plugins {
-    kotlin("multiplatform") version "1.5.0"
+    kotlin("multiplatform") version "2.1.21"
     id("maven-publish")
 }
 
 group = "com.blackstone"
-version = "0.1.0"
+version = "0.2.0"
 
 repositories {
     google()
@@ -13,45 +13,55 @@ repositories {
 
 kotlin {
     jvm()
-    val ios64 = iosArm64("ios64")
-    val iosX64 = iosX64("iosX64")
-    configure(listOf(ios64, iosX64)) {
+
+    js(IR) {
+        browser { binaries.executable() }
+        nodejs { binaries.executable() }
+    }
+
+    val iosArm64Target = iosArm64()
+    val iosX64Target = iosX64()
+    val iosSimulatorArm64Target = iosSimulatorArm64()
+
+    configure(listOf(iosArm64Target, iosX64Target, iosSimulatorArm64Target)) {
         binaries.framework {
             baseName = "KtValidate"
         }
     }
+
     sourceSets {
         val commonMain by getting
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test-common"))
+                implementation(kotlin("test"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
         val jvmMain by getting
     }
+}
 
+// Create a task to build a fat framework that aggregates simulator/device outputs.
+val kotlinExtension =
+    extensions.getByType<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>()
 
-    // Create a task to build a fat framework.
-    tasks.register<org.jetbrains.kotlin.gradle.tasks.FatFrameworkTask>("debugFatFramework") {
-        // The fat framework must have the same base name as the initial frameworks.
-        baseName = "KtValidate"
-        // The default destination directory is "<build directory>/fat-framework".
-        destinationDir = buildDir.resolve("KtValidate/debug")
-        // Specify the frameworks to be merged.
-        from(
-            iosX64.binaries.getFramework("DEBUG"),
-            ios64.binaries.getFramework("DEBUG")
-        )
-    }
-
-
+tasks.register<org.jetbrains.kotlin.gradle.tasks.FatFrameworkTask>("debugFatFramework") {
+    baseName = "KtValidate"
+    destinationDir = buildDir.resolve("KtValidate/debug")
+    from(
+        kotlinExtension.targets.getByName<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>("iosArm64")
+            .binaries.getFramework("DEBUG"),
+        kotlinExtension.targets.getByName<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>("iosX64")
+            .binaries.getFramework("DEBUG"),
+        kotlinExtension.targets.getByName<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>("iosSimulatorArm64")
+            .binaries.getFramework("DEBUG")
+    )
 }
 
 publishing {
     // this fetches our credentials from ~/.gradle/gradle.properties
-    val mavenUser: String by project
-    val mavenPassword: String by project
+    val mavenUser: String? by project
+    val mavenPassword: String? by project
 
     repositories {
         maven {
