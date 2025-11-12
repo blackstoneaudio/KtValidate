@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "2.1.21"
+    kotlin("multiplatform") version "2.2.21"
     id("maven-publish")
 }
 
@@ -47,7 +47,7 @@ val kotlinExtension =
 
 tasks.register<org.jetbrains.kotlin.gradle.tasks.FatFrameworkTask>("debugFatFramework") {
     baseName = "KtValidate"
-    destinationDir = buildDir.resolve("KtValidate/debug")
+    destinationDirProperty.set(layout.buildDirectory.dir("KtValidate/debug"))
     from(
         kotlinExtension.targets.getByName<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>("iosArm64")
             .binaries.getFramework("DEBUG"),
