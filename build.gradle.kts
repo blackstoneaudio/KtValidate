@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.9.0"
+    kotlin("multiplatform") version "2.2.21"
     id("maven-publish")
 }
 
@@ -14,8 +14,11 @@ repositories {
 kotlin {
     jvm()
 
+    watchosArm32()
+    watchosArm64()
+    watchosDeviceArm64()
+    watchosX64()
     watchosSimulatorArm64()
-    watchos()
     iosArm64()
     iosX64()
     iosSimulatorArm64()
