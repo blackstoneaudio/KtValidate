@@ -22,6 +22,8 @@ kotlin {
     iosArm64()
     iosX64()
     iosSimulatorArm64()
+    tvosArm64()
+    tvosSimulatorArm64()
 
 
     // Create a task to build a fat framework.
